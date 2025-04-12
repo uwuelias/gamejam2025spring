@@ -2,8 +2,8 @@ import "./style.css";
 import Phaser, { Scene } from "phaser";
 
 const sizes = {
-  width: 800,
-  height: 800,
+  width: 1100,
+  height: 600,
 };
 
 const speedDown = 300;
