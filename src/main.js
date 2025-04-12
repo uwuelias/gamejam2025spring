@@ -1,5 +1,7 @@
 import "./style.css";
 import Phaser, { Scene } from "phaser";
+import MenuScene from "./menu";
+import GameScene from "./gamescene1";
 
 const sizes = {
   width: 1200,
@@ -7,27 +9,6 @@ const sizes = {
 };
 
 const speedDown = 300;
-
-class GameScene extends Phaser.Scene {
-  constructor() {
-    super("scene-game");
-    this.player;
-  }
-
-  preload() {
-    this.load.image(
-      "bg",
-      "./assets/background/PNG/battle1.png"
-    );
-  }
-
-  create() {
-    this.add.image(0, 0, "bg").setOrigin(0, 0);
-    
-  }
-
-  update() {}
-}
 
 const config = {
   type: Phaser.WEBGL,
@@ -41,7 +22,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [GameScene],
+  scene: [MenuScene, GameScene],
 };
 
 const game = new Phaser.Game(config);
