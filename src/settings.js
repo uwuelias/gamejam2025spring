@@ -60,7 +60,7 @@ class SettingsScene extends Phaser.Scene{
         rollVolume(){
             const menu_sound = this.registry.get('menu_sound');
             const randomVal = Phaser.Math.FloatBetween(0, 1).toFixed(2);
-            menu_sound.setVolume(randomVal);
+            this.sound.setVolume(randomVal);
             this.volText.setText('Volume: ' + randomVal * 100);
          }
 
