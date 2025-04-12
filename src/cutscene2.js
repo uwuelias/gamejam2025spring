@@ -12,15 +12,13 @@ class CutScene2 extends Phaser.Scene {
   }
 
   create() {
-    const sad_music = this.registry.get('sad_music');
-    this.cameras.main.fadeIn(1000,0,0,0);
+    this.cameras.main.fadeIn(600,0,0,0);
     const nextButton = this.add.image(0, 0, "cs_bg2").setOrigin(0, 0);
     nextButton.setInteractive();
     nextButton.on('pointerdown', () =>{
-        this.cameras.main.fadeOut(1000,0,0,0);
-            this.time.delayedCall(1000,()=>{
-                sad_music.stop();
-                this.scene.start('GameScene');
+        this.cameras.main.fadeOut(600,0,0,0);
+            this.time.delayedCall(600,()=>{
+                this.scene.start('CutScene3');
             })
     })
   }
