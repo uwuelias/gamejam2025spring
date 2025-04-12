@@ -84,11 +84,23 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
+
+    //winning/losing:
+    let outcome = true;
+    this.registry.set('outcome', outcome);
+
+
+
+
+
+
     const { width, height } = this.scale;
 
     var bgm = this.sound.add("bgm_audio");
     bgm.loop = true;
     bgm.play();
+    this.registry.set('bgm', bgm);
+
 
     this.playerMaxHP = Phaser.Math.FloatBetween(10, 10000);
     this.playerCurrentHP = this.playerMaxHP;
@@ -184,6 +196,32 @@ class GameScene extends Phaser.Scene {
   update() {
     const speed = 200;
     const onGround = this.player.body.touching.down;
+
+    //outcome (victory/defeat)
+
+    var bgm = this.registry.get('bgm');
+    //if player dead (loss)
+    if(this.playerCurrentHP<=0){
+      this.registry.set('outcome', false);
+      this.scene.start('EndScene');
+      bgm.stop();
+      return;
+    }
+
+    //if no more vampires (win)
+
+    //if touch right side (win)
+    const rightEdge = this.scale.width;
+
+  if (this.player.x >= rightEdge - this.player.width / 2) {
+    this.registry.set('outcome', true);
+    this.scene.start('EndScene');
+    bgm.stop();
+    return;
+}
+
+
+
 
     if (this.isAttacking) {
       this.player.setVelocityX(0);
