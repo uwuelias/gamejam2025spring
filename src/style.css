@@ -35,8 +35,6 @@ main {
 
 #gameCanvas {
   border: 1px solid black;
-  height: 800px;
-  width: 800px;
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
