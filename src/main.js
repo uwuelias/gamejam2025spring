@@ -2,6 +2,7 @@ import "./style.css";
 import Phaser, { Scene } from "phaser";
 import MenuScene from "./menu";
 import GameScene from "./gamescene1";
+import SettingsScene from "./settings";
 
 const sizes = {
   width: 1200,
@@ -22,7 +23,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [MenuScene, GameScene],
+  scene: [MenuScene, SettingsScene, GameScene],
 };
 
 const game = new Phaser.Game(config);
