@@ -11,11 +11,19 @@ const speedDown = 300;
 class GameScene extends Phaser.Scene {
   constructor() {
     super("scene-game");
+    this.player;
   }
 
-  preload() {}
+  preload() {
+    this.load.image(
+      "bg",
+      "./assets/background/PNG/Battleground1/Bright/Battleground1.png"
+    );
+  }
 
-  create() {}
+  create() {
+    this.add.image(0, 0, "bg").setOrigin(0, 0);
+  }
 
   update() {}
 }
