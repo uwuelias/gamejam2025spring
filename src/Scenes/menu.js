@@ -8,11 +8,14 @@ class Menu extends Phaser.Scene{
     }
     
     preload(){
-
+        this.load.image(
+            "bg",
+            "./assets/background/PNG/menu.png"
+          );
     }
 
     create(){
-
+        this.add.image(0, 0, "bg").setOrigin(0, 0);
     }
 
 
