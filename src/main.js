@@ -10,7 +10,6 @@ import CutScene4 from "./cutscene4";
 import CutScene5 from "./cutscene5";
 import EndScene from "./end";
 
-
 const sizes = {
   width: 1200,
   height: 675,
