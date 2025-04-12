@@ -1,6 +1,17 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: pixel;
 }
+
+@font-face{
+  font-family: pixel;
+  src: url(../public/assets/font/upheavtt.ttf);
+}
+
+@font-face{
+  font-family: pixel2;
+  src: url(../public/assets/font/VCR_OSD_MONO_1.001.ttf);
+}
+
 
 * {
   margin: 0;
