@@ -5,6 +5,10 @@ import GameScene from "./gamescene1";
 import SettingsScene from "./settings";
 import CutScene1 from "./cutscene1";
 import CutScene2 from "./cutscene2";
+import CutScene3 from "./cutscene3";
+import CutScene4 from "./cutscene4";
+import CutScene5 from "./cutscene5";
+
 
 const sizes = {
   width: 1200,
@@ -25,7 +29,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [MenuScene, SettingsScene, CutScene1, CutScene2, GameScene],
+  scene: [MenuScene, SettingsScene, CutScene1, CutScene2, CutScene3, CutScene4, CutScene5, GameScene],
 };
 
 const game = new Phaser.Game(config);

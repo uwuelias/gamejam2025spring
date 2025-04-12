@@ -23,8 +23,8 @@ class CutScene1 extends Phaser.Scene {
     const nextButton = this.add.image(0, 0, "cs_bg1").setOrigin(0, 0);
     nextButton.setInteractive();
     nextButton.on('pointerdown', () =>{
-        this.cameras.main.fadeOut(1000,0,0,0);
-            this.time.delayedCall(1000,()=>{
+        this.cameras.main.fadeOut(600,0,0,0);
+            this.time.delayedCall(600,()=>{
                 this.scene.start('CutScene2');
             })
     })
