@@ -142,11 +142,6 @@ class GameScene extends Phaser.Scene {
     let outcome = true;
     this.registry.set('outcome', outcome);
 
-
-
-
-
-
     const { width, height } = this.scale;
 
     var bgm = this.sound.add("bgm_audio");
@@ -154,15 +149,12 @@ class GameScene extends Phaser.Scene {
     bgm.play();
     this.registry.set('bgm', bgm);
 
-    
-
     this.damageText = this.add.text(20, 80, "", {
       fontSize: "30px",
       fontFamily: "pixel",
       color: "#ff0000"
     });
     this.damageText.setDepth(10);
-
 
     this.playerMaxHP = Phaser.Math.FloatBetween(10, 10000);
     this.playerCurrentHP = this.playerMaxHP;
@@ -189,16 +181,12 @@ class GameScene extends Phaser.Scene {
     });
     this.updateHealthBar();
 
-    
-
     this.hitBox = this.add.rectangle(this.player.x + this.player.width/2,this.player.y,64,128,0xff0000, .5);
     this.physics.add.existing(this.hitBox);
     this.hitBox.body.setAllowGravity(false);
     this.hitBox.body.setImmovable(true);
     this.hitBox.setVisible(false);
     
-
-
     this.vampires = this.physics.add.group();
     this.physics.add.overlap(this.player, this.vampires, this.onPlayerVampCollision, null, this);
 
@@ -280,12 +268,7 @@ class GameScene extends Phaser.Scene {
       if (pointer.leftButtonDown() && !this.isAttacking) {
         this.isAttacking = true;
         this.player.anims.play("attack", true);
-
-        
-        
         this.updateHitBoxPosition();
-        
-
         this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
           this.isAttacking = false;
         });
@@ -320,10 +303,6 @@ class GameScene extends Phaser.Scene {
     bgm.stop();
     return;
 }
-
-
-
-
     if (this.isAttacking) {
       this.player.setVelocityX(0);
       this.updateHitBoxPosition();
@@ -354,12 +333,10 @@ class GameScene extends Phaser.Scene {
       this.player.setVelocityX(0);
       if (onGround) this.player.anims.play("idleAnimation", true);
     }
-
     if ((this.keys.up.isDown || this.keys.space.isDown) && onGround) {
       this.player.setVelocityY(-250);
       this.player.anims.play("jump", true);
     }
-
     this.vampires.getChildren().forEach((vampire) => {
       if(!vampire.isAttacking){
       vampire.setVelocityX(100 * vampire.direction);
@@ -372,7 +349,6 @@ class GameScene extends Phaser.Scene {
       }
     }
     });
-  
   }
 
   onPlayerVampCollision(player, vampire)
