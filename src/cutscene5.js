@@ -1,4 +1,3 @@
-import Phaser from 'phaser';
 
 class CutScene5 extends Phaser.Scene {
   constructor() {
