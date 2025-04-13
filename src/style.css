@@ -1,11 +1,11 @@
 @font-face {
   font-family: pixel;
-  src: url("./assets/font/upheavtt.ttf");
+  src: url("/assets/font/upheavtt.ttf");
 }
 
 @font-face {
   font-family: pixel2;
-  src: url("./assets/font/VCR_OSD_MONO_1.001.ttf");
+  src: url("/assets/font/VCR_OSD_MONO_1.001.ttf");
 }
 
 * {
@@ -24,7 +24,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: alicebluew;
+  background-color: aliceblue;
   font-family: pixel;
 }
 
