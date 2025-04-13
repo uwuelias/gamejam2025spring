@@ -1,4 +1,3 @@
-import Phaser from "phaser";
 
 class EndScene extends Phaser.Scene {
   constructor() {
