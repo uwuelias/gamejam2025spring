@@ -10,52 +10,43 @@ class GameScene extends Phaser.Scene {
   }
 
   updateHitBoxPosition() {
-    if(this.hitBox)
-    {
+    if (this.hitBox) {
       this.hitBox.setPosition(this.player.x, this.player.y);
-  
-      if(this.player.flipX)
-      {
-        this.hitBox.setPosition(this.player.x -50, this.player.y);
-      }
-      else 
-      {
-        this.hitBox.setPosition(this.player.x +50, this.player.y);
+
+      if (this.player.flipX) {
+        this.hitBox.setPosition(this.player.x - 50, this.player.y);
+      } else {
+        this.hitBox.setPosition(this.player.x + 50, this.player.y);
       }
     }
   }
 
-  playerDealDamage(vampire)
-  { 
-
-    let damage = Phaser.Math.Between(1,1000);
-    vampire.setData('health', vampire.getData('health') - damage);
+  playerDealDamage(vampire) {
+    let damage = Phaser.Math.Between(1, 1000);
+    vampire.setData("health", vampire.getData("health") - damage);
     this.damageText.setText(`-${damage}`);
     this.damageText.setPosition(vampire.x, vampire.y - 50);
     this.damageText.setAlpha(1);
     this.tweens.add({
       targets: this.damageText,
-      alpha: {from: 1, to: 0},
-      duration: 3000, 
+      alpha: { from: 1, to: 0 },
+      duration: 3000,
       onComplete: () => {
         this.damageText.setText("");
-      }
+      },
     });
-    if(vampire.getData('health') <=0)
-    {
-      vampire.destroy();
+    if (vampire.getData("health") <= 0) {
+      this.vampires.remove(vampire, true, true);
     }
   }
 
-  playerTakeDamage()
-  {
+  playerTakeDamage() {
     console.log("player took damage");
     let damage = Phaser.Math.Between(50, 2500);
     this.playerCurrentHP -= damage;
-    console.log("Player took damage! Current HP: ", this.playerCurrentHP)
-    if(this.playerCurrentHP <= 0)
-    {
-      this.player.setVelocity(0,0);
+    console.log("Player took damage! Current HP: ", this.playerCurrentHP);
+    if (this.playerCurrentHP <= 0) {
+      this.player.setVelocity(0, 0);
       console.log("Game Over");
     }
     this.updateHealthBar();
@@ -128,31 +119,31 @@ class GameScene extends Phaser.Scene {
     );
 
     this.load.spritesheet(
-      "vampAttack", "./assets/sprites/villains/craftpix-net-506778-free-vampire-pixel-art-sprite-sheets/Countess_Vampire/Attack_1.png", {
+      "vampAttack",
+      "./assets/sprites/villains/craftpix-net-506778-free-vampire-pixel-art-sprite-sheets/Countess_Vampire/Attack_1.png",
+      {
         frameWidth: 128,
         frameHeight: 128,
       }
-    )
-
+    );
   }
 
   create() {
-
     //winning/losing:
     let outcome = true;
-    this.registry.set('outcome', outcome);
+    this.registry.set("outcome", outcome);
 
     const { width, height } = this.scale;
 
     var bgm = this.sound.add("bgm_audio");
     bgm.loop = true;
     bgm.play();
-    this.registry.set('bgm', bgm);
+    this.registry.set("bgm", bgm);
 
     this.damageText = this.add.text(20, 80, "", {
       fontSize: "30px",
       fontFamily: "pixel",
-      color: "#ff0000"
+      color: "#ff0000",
     });
     this.damageText.setDepth(10);
 
@@ -181,18 +172,35 @@ class GameScene extends Phaser.Scene {
     });
     this.updateHealthBar();
 
-    this.hitBox = this.add.rectangle(this.player.x + this.player.width/2,this.player.y,64,128,0xff0000, .5);
+    this.hitBox = this.add.rectangle(
+      this.player.x + this.player.width / 2,
+      this.player.y,
+      64,
+      128,
+      0xff0000,
+      0.5
+    );
     this.physics.add.existing(this.hitBox);
     this.hitBox.body.setAllowGravity(false);
     this.hitBox.body.setImmovable(true);
     this.hitBox.setVisible(false);
-    
+
     this.vampires = this.physics.add.group();
-    this.physics.add.overlap(this.player, this.vampires, this.onPlayerVampCollision, null, this);
+    this.physics.add.overlap(
+      this.player,
+      this.vampires,
+      this.onPlayerVampCollision,
+      null,
+      this
+    );
 
     for (let i = 0; i < Phaser.Math.Between(5, 20); i++) {
-      const vampire = this.vampires.create(Phaser.Math.Between(100,1000), Phaser.Math.Between(300, 500), "vampire1");
-      vampire.setData('health', Phaser.Math.Between(10, 1000));
+      const vampire = this.vampires.create(
+        Phaser.Math.Between(400, 1000),
+        Phaser.Math.Between(300, 500),
+        "vampire1"
+      );
+      vampire.setData("health", Phaser.Math.Between(10, 1000));
       vampire.setBounce(0.2);
       vampire.setCollideWorldBounds(true);
       vampire.setScale(1.2);
@@ -236,7 +244,7 @@ class GameScene extends Phaser.Scene {
     this.anims.create(jump);
     this.anims.create(attack);
 
-    //vamp anims 
+    //vamp anims
 
     const vampRun = {
       key: "vampRun",
@@ -245,10 +253,12 @@ class GameScene extends Phaser.Scene {
       repeat: -1,
     };
 
-
     const vampAttack = {
       key: "vampAttack",
-      frames: this.anims.generateFrameNumbers("vampAttack", { start: 0, end: 5 }),
+      frames: this.anims.generateFrameNumbers("vampAttack", {
+        start: 0,
+        end: 5,
+      }),
       frameRate: 8,
       repeat: 0,
     };
@@ -279,35 +289,37 @@ class GameScene extends Phaser.Scene {
   update() {
     const speed = 200;
     const onGround = this.player.body.touching.down;
+    const bgm = this.registry.get("bgm");
+    const rightEdge = this.scale.width;
 
-    //outcome (victory/defeat)
-
-    var bgm = this.registry.get('bgm');
-    //if player dead (loss)
-    if(this.playerCurrentHP<=0){
-      this.playerCurrentHp=0;
-      this.registry.set('outcome', false);
-      this.scene.start('EndScene');
+    //conditions (victory/defeat)
+    if (
+      this.vampires.getChildren().length == 0 &&
+      this.player.x >= rightEdge - this.player.width / 2
+    ) {
+      this.registry.set("outcome", true);
       bgm.stop();
+      this.scene.start("EndScene");
       return;
     }
 
-    //if no more vampires (win)
+    //if player dead (loss)
+    if (this.playerCurrentHP <= 0) {
+      this.playerCurrentHp = 0;
+      this.registry.set("outcome", false);
+      bgm.stop();
+      this.scene.start("EndScene");
+      return;
+    }
 
-    //if touch right side (win)
-    const rightEdge = this.scale.width;
-
-  if (this.player.x >= rightEdge - this.player.width / 2) {
-    this.registry.set('outcome', true);
-    this.scene.start('EndScene');
-    bgm.stop();
-    return;
-}
     if (this.isAttacking) {
       this.player.setVelocityX(0);
       this.updateHitBoxPosition();
       this.vampires.getChildren().forEach((vampire) => {
-        if(this.hitBox.getBounds().contains(vampire.x, vampire.y) && !vampire.damagedFromAtk) {
+        if (
+          this.hitBox.getBounds().contains(vampire.x, vampire.y) &&
+          !vampire.damagedFromAtk
+        ) {
           this.playerDealDamage(vampire);
           vampire.damagedFromAtk = true;
         }
@@ -315,7 +327,7 @@ class GameScene extends Phaser.Scene {
       this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
         this.isAttacking = false;
         this.vampires.getChildren().forEach((vampire) => {
-          vampire.damagedFromAtk = false; 
+          vampire.damagedFromAtk = false;
         });
       });
       return;
@@ -338,38 +350,38 @@ class GameScene extends Phaser.Scene {
       this.player.anims.play("jump", true);
     }
     this.vampires.getChildren().forEach((vampire) => {
-      if(!vampire.isAttacking){
-      vampire.setVelocityX(100 * vampire.direction);
-      vampire.setFlipX(vampire.direction < 0);
-      vampire.anims.play("vampRun", true);
-      if (vampire.x >= 1000) {
-        vampire.direction = -1;
-      } else if (vampire.x <= 100) {
-        vampire.direction = 1;
+      if (!vampire.isAttacking) {
+        vampire.setVelocityX(100 * vampire.direction);
+        vampire.setFlipX(vampire.direction < 0);
+        vampire.anims.play("vampRun", true);
+        if (vampire.x >= 1000) {
+          vampire.direction = -1;
+        } else if (vampire.x <= 100) {
+          vampire.direction = 1;
+        }
       }
-    }
     });
   }
 
-  onPlayerVampCollision(player, vampire)
-  {
-    if(this.playerCurrentHP <= 0) return;
-    if(!vampire.isAttacking)
-    {
-      const distanceToPlayer = Phaser.Math.Distance.Between(vampire.x, vampire.y, player.x, player.y );
-      if(distanceToPlayer < 40)
-      {
-      vampire.isAttacking = true;
-      vampire.anims.play("vampAttack", true);
-      this.playerTakeDamage();
-      this.time.delayedCall(1500, () => {
-        vampire.isAttacking = false;
-      });
+  onPlayerVampCollision(player, vampire) {
+    if (this.playerCurrentHP <= 0) return;
+    if (!vampire.isAttacking) {
+      const distanceToPlayer = Phaser.Math.Distance.Between(
+        vampire.x,
+        vampire.y,
+        player.x,
+        player.y
+      );
+      if (distanceToPlayer < 40) {
+        vampire.isAttacking = true;
+        vampire.anims.play("vampAttack", true);
+        this.playerTakeDamage();
+        this.time.delayedCall(1500, () => {
+          vampire.isAttacking = false;
+        });
+      }
     }
   }
-  }
 }
-
-
 
 export default GameScene;
