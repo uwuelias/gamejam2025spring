@@ -194,7 +194,7 @@ class GameScene extends Phaser.Scene {
       this
     );
 
-    for (let i = 0; i < Phaser.Math.Between(5, 20); i++) {
+    for (let i = 0; i < Phaser.Math.Between(5, 10); i++) {
       const vampire = this.vampires.create(
         Phaser.Math.Between(400, 1000),
         Phaser.Math.Between(300, 500),
